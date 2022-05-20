@@ -5,9 +5,11 @@ import java.awt.event.*;
 import javax.swing.*;
 import sampledialogeditor.model.User;
 
-
 /**
+ * @author Jakob Farian Krarup (kr@rup.dk)
+ * 
  *  UserEditorDialog is a sample dialog for editing a User object.
+ *  The dialog also registers ENTER to accept and ESC to cancel.
  *  
  *  TO CREATE NEW USER OBJECT
  *   - show the dialog and get the dialog's values as a new User object using getUser()
@@ -39,53 +41,34 @@ public class UserEditorDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	private User user;
-	private JLabel userNameLabel, userEmailLabel;
 	private JTextField userNameTextField, userEmailTextField;
 	private JCheckBox isAdminCheckBox;
-
+	protected JButton cancelButton, saveButton;
+	
 	public UserEditorDialog(JFrame parent) {
 		super(parent, true);
-		createLayout();
+		SwingUtilities.invokeLater(() -> createLayout());
 	}
 
 	private void createLayout() {
-		setSize(400, 300);
+
 		LayoutManager gridLayoutManager = new GridLayout(0, 2);
 		getContentPane().setLayout(gridLayoutManager);
-		userNameLabel = new JLabel("Name:");
-		userEmailLabel = new JLabel("Email:");
-		userNameTextField = new JTextField("", 25);
-		userEmailTextField = new JTextField("", 25);
-		
-		isAdminCheckBox = new JCheckBox("Is admin", false);
-		
-		JButton cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				setUser(null);
-				setVisible(false);
-			}
-		});
-		JButton saveButton = new JButton("Save");
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				saveValuesToUser();
-				setVisible(false);
-			}
-		});
-
-		getContentPane().add(userNameLabel);
-		getContentPane().add(userNameTextField);
-		getContentPane().add(userEmailLabel);
-		getContentPane().add(userEmailTextField);
+		getContentPane().add(new JLabel("Name:"));
+		getContentPane().add(userNameTextField = new JTextField("", 25));
+		getContentPane().add(new JLabel("Email:"));
+		getContentPane().add(userEmailTextField = new JTextField("", 25));
 		getContentPane().add(new JPanel());
-		getContentPane().add(isAdminCheckBox);
-		getContentPane().add(cancelButton);
-		getContentPane().add(saveButton);
+		getContentPane().add(isAdminCheckBox = new JCheckBox("Is admin", false));
+		
+		getContentPane().add(cancelButton = new JButton("Cancel"));
+		cancelButton.addActionListener((a) -> cancel());
+		
+		getContentPane().add(saveButton = new JButton("Save"));
+		saveButton.addActionListener((a)-> save());
+		setEnterAndEscapeButtonFunctionality();
 		pack();
-		setLocationRelativeTo(null);
+		setLocationRelativeTo(null);	//centers on screen
 	}
 
 	private void saveValuesToUser() {
@@ -121,5 +104,38 @@ public class UserEditorDialog extends JDialog {
 		userNameTextField.setText(null);
 		userEmailTextField.setText(null);
 		isAdminCheckBox.setSelected(false);
+	}
+	
+	protected void cancel() {
+		setUser(null);
+		setVisible(false);
+	}
+
+	protected void save() {
+		saveValuesToUser();
+		setVisible(false);
+	}
+	
+	
+	// make the ENTER key activate the SAVE button
+	// and the ESCAPE key activate the CANCEL button
+	private void setEnterAndEscapeButtonFunctionality() {
+
+		//set the ENTER key to "click" the SAVE button
+		getRootPane().setDefaultButton(saveButton);
+
+		//declare the ESCAPE key
+		KeyStroke esc = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+		
+		//register the ESCAPE key to the cancel() method using an ActionMap and an AbstractAction
+		getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(esc, "escapeCancels");
+		getRootPane().getActionMap().put("escapeCancels", new AbstractAction() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				cancel();
+			}
+		});
 	}
 }

@@ -1,9 +1,9 @@
 package sampledialogeditor.ui;
 
 import java.awt.GridLayout;
-import java.awt.event.*;
-import javax.swing.*;
 
+import javax.swing.*;
+import javax.swing.SwingUtilities;
 import sampledialogeditor.model.User;
 
 public class MainWindow extends JFrame {
@@ -15,37 +15,28 @@ public class MainWindow extends JFrame {
 	private JLabel userInfoLabel;
 	
 	public MainWindow() {
-		createLayout();
+		SwingUtilities.invokeLater(() -> createLayout());
+		
 		userEditorDialog = new UserEditorDialog(this);
+
 	}
 
 	private void createLayout() {
 		
-		//size, location and close operation
+		//set size, location and close operation
 		setSize(400, 200);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		//layout and controls
+		//set layout and add controls
 		getContentPane().setLayout(new GridLayout(0,1));	//single column layout
 		
 		getContentPane().add(createUserButton = new JButton("Create user"));
-		createUserButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showCreateUserDialog();
-			}
-		});
+		createUserButton.addActionListener((a) -> showCreateUserDialog());
 
 		getContentPane().add(editUserButton = new JButton("Edit user"));
 		editUserButton.setEnabled(false);
-		editUserButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				showEditUserDialog();
-			}
-		});
+		editUserButton.addActionListener((a) -> showEditUserDialog());
 		
 		getContentPane().add(userInfoLabel = new JLabel("", SwingConstants.CENTER));
 	}
