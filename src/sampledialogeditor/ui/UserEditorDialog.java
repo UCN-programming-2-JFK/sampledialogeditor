@@ -6,10 +6,35 @@ import javax.swing.*;
 import sampledialogeditor.model.User;
 
 
-/*	UserEditorDialog is a sample dialog for editing an object.
- *  To create new objects just instantiate and show the dialog 
- *  from another window and get the values of the   
+/**
+ *  UserEditorDialog is a sample dialog for editing a User object.
  *  
+ *  TO CREATE NEW USER OBJECT
+ *   - instantiate and show the dialog 
+ *   - get the dialog's values as a new User object using getUser()
+ *   <pre>
+ *   	userEditorDialog.setUser(null);
+		userEditorDialog.setVisible(true);
+		User newUser = userEditorDialog.getUser();
+	</pre>
+	  If the "Save" button was clicked, 
+	  userEditorDialog.getUser() returns a User object
+	  with the data from the dialog fields.
+	  Otherwise NULL is returned. 
+ *   
+ *  TO EDIT EXISTING USER OBJECT
+ *   - instantiate and show the dialog
+ *   <pre>
+ *   	userEditorDialog.setUser(user);
+		userEditorDialog.setVisible(true);
+	</pre>
+	- the altered values will be transferred to the User object
+	  if the "Save" button is clicked.
+	
+	It is possible to clear the dialog's fields
+	by setting a NULL user: 
+	<pre>userEditorDialog.setUser(null);</pre> 
+ *   
  */
 public class UserEditorDialog extends JDialog {
 
