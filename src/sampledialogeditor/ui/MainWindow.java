@@ -11,51 +11,52 @@ public class MainWindow extends JFrame {
 
 	private User user;
 	private UserEditorDialog userEditorDialog;
-	private JButton editUserButton;
+	private JButton editUserButton, createUserButton;
 	private JLabel userInfoLabel;
 	
 	public MainWindow() {
+		createLayout();
+		userEditorDialog = new UserEditorDialog(this);
+	}
 
-		getContentPane().setLayout(new GridLayout(0,1));
-
+	private void createLayout() {
+		
+		//size, location and close operation
 		setSize(400, 200);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		JButton newUserButton = new JButton("New user");
-		newUserButton.addActionListener(new ActionListener() {
+		//layout and controls
+		getContentPane().setLayout(new GridLayout(0,1));	//single column layout
+		
+		getContentPane().add(createUserButton = new JButton("Create user"));
+		createUserButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showNewUserDialog();
+				showCreateUserDialog();
 			}
 		});
-		getContentPane().add(newUserButton);
 
-		editUserButton = new JButton("Edit user");
+		getContentPane().add(editUserButton = new JButton("Edit user"));
 		editUserButton.setEnabled(false);
 		editUserButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				showUserEditorDialog();
+				showEditUserDialog();
 			}
 		});
-		getContentPane().add(editUserButton);
 		
-		
-		userInfoLabel = new JLabel("", SwingConstants.CENTER);
-		getContentPane().add(userInfoLabel);
-		
-		userEditorDialog = new UserEditorDialog(this);
-		setLocationRelativeTo(null);
+		getContentPane().add(userInfoLabel = new JLabel("", SwingConstants.CENTER));
 	}
 
-	private void showUserEditorDialog() {
+	private void showEditUserDialog() {
 		userEditorDialog.setUser(user);
 		userEditorDialog.setVisible(true);
 		displayUser();
 	}
 
-	private void showNewUserDialog() {
+	private void showCreateUserDialog() {
 		userEditorDialog.setUser(null);
 		userEditorDialog.setVisible(true);
 		User newUser = userEditorDialog.getUser();

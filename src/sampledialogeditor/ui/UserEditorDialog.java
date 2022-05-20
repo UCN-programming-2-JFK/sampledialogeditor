@@ -10,8 +10,7 @@ import sampledialogeditor.model.User;
  *  UserEditorDialog is a sample dialog for editing a User object.
  *  
  *  TO CREATE NEW USER OBJECT
- *   - instantiate and show the dialog 
- *   - get the dialog's values as a new User object using getUser()
+ *   - show the dialog and get the dialog's values as a new User object using getUser()
  *   <pre>
  *   	userEditorDialog.setUser(null);
 		userEditorDialog.setVisible(true);
@@ -20,21 +19,20 @@ import sampledialogeditor.model.User;
 	  If the "Save" button was clicked, 
 	  userEditorDialog.getUser() returns a User object
 	  with the data from the dialog fields.
-	  Otherwise NULL is returned. 
+	  If the "Cancel" button was clicked, NULL is returned. 
  *   
  *  TO EDIT EXISTING USER OBJECT
- *   - instantiate and show the dialog
+ *   - set the user object on the dialog and show the dialog:
  *   <pre>
  *   	userEditorDialog.setUser(user);
 		userEditorDialog.setVisible(true);
 	</pre>
-	- the altered values will be transferred to the User object
-	  if the "Save" button is clicked.
+	  If the "Save" button is clicked.
+	  the altered values will be transferred to the User object.
 	
-	It is possible to clear the dialog's fields
-	by setting a NULL user: 
+	CLEARING THE DIALOG'S FIELDS
+	Setting a NULL user will clear the dialog's fields: 
 	<pre>userEditorDialog.setUser(null);</pre> 
- *   
  */
 public class UserEditorDialog extends JDialog {
 
@@ -60,7 +58,6 @@ public class UserEditorDialog extends JDialog {
 		userEmailTextField = new JTextField("", 25);
 		
 		isAdminCheckBox = new JCheckBox("Is admin", false);
-		
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
